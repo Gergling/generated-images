@@ -346,11 +346,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build', [
-        'bower',       // Install dependencies with bower
         'template',    // Populate templates with lists of source files
-        'eol',         // Standardise on LF (Unix) line endings
-        'clean:junit', // Clean up old test results
-        'jasmine_node',// Run server unit tests with Jasmine
         'jasmine',     // Run client unit tests with Jasmine
         'jslint',      // Check code with JSLint
         'uglify',      // Concatenate and minify code

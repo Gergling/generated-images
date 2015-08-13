@@ -17,25 +17,17 @@ module.exports = function (grunt) {
             ],
 
             scripts: [
-                'src/public_html/modules.js',          // QH module definitions.
-                'src/public_html/module/fusepump/fusepump.js', // Fusepump lib.
-                'src/public_html/module/**/module.js', // Module.js files.
-                'src/public_html/module/**/*.js',      // Other source files.
-                'src/public_html/angular.bootstrap.run.js' // Bootstrap.
+                'src/public_html/module/**/module.js',
+                'src/public_html/module/**/*.js'
             ],
             client: [
                 'src/public/modules/**/module.js',
                 'src/public/modules/**/*.js'
             ],
             module: [ 'src/module/**/*.js' ],
-            other: [
-                'src/templates/image-generator/**/*.js',
-                'server.js'
-            ],
 
             helpers: [ 'src/public/vendor/angular-mocks/*.js' ],
-            specsClient: grunt.file.expand('specs/client/**/*.js'),
-            specsServer: grunt.file.expand('specs/server/**/*.js')
+            spec: grunt.file.expand('spec/client/**/*.js')
         },
 
         css = {
@@ -43,7 +35,7 @@ module.exports = function (grunt) {
             styles: [ 'src/public/modules/**/*.css' ]
         },
 
-        banner = '/* TBE */\n'
+        banner = '/* Liftr */\n'
             + '/* <%= grunt.template.today("yyyy-mm-dd") %> */\n';
 
     paths.server = paths.module.concat(paths.other);
@@ -53,35 +45,6 @@ module.exports = function (grunt) {
     require("./src/grunt/modules.js")(grunt);
 
     grunt.initConfig({
-        bower: {
-            install: {
-                options: {
-                    targetDir: './src/public/vendor',
-                    verbose: true,
-                    layout: function (type, component, source) {
-                        /*
-                         * Make sure bootstrap CSS and fonts appear in correct
-                         * directories relative to each other.
-                         */
-                        if (component === 'bootstrap') {
-                            if (source.match('bootstrap.css')) {
-                                return require('path').join(component, 'css');
-                            }
-                            if (source.match('glyphicons-halflings-regular')) {
-                                return require('path').join(component, 'fonts');
-                            }
-                        }
-                        if (component === 'ng-slider') {
-                            if (source.match('ng-slider.min.css')) {
-                                return require('path').join(component, 'css');
-                            }
-                        }
-                        return component;
-                    }
-                }
-            }
-        },
-
         jslint: {
             grunt: {
                 src: [ 'Gruntfile.js' ],

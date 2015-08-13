@@ -45,60 +45,7 @@ module.exports = function (grunt) {
     require("./src/grunt/modules.js")(grunt);
 
     grunt.initConfig({
-        jslint: {
-            grunt: {
-                src: [ 'Gruntfile.js' ],
-                directives: {
-                    unparam: true,
-                    maxlen: 80,
-                    predef: [ 'module', 'require', 'process' ]
-                }
-            },
-            client: {
-                src: paths.client,
-                browser: true,
-                directives: {
-                    predef: [
-                        '$',
-                        'angular',
-                        'jQuery',
-                        'window'
-                    ]
-                },
-                options: { checkstyle: 'build/logs/checkstyle.xml' }
-            },
-            server: {
-                src: paths.other,
-                directives: {
-                    unparam: true,
-                    maxlen: 80,
-                    predef: [ 'module', 'require', 'process' ]
-                }
-            },
-            module: {
-                src: paths.module,
-                directives: {
-                    predef: [ 'module', 'require' ]
-                }
-            },
-            specs: {
-                src: paths.specs,
-                directives: {
-                    predef: [
-                        'afterEach',
-                        'angular',
-                        'beforeEach',
-                        'describe',
-                        'expect',
-                        'it',
-                        'inject',
-                        'jasmine',
-                        'module',
-                        'require'
-                    ]
-                }
-            }
-        },
+        jslint: require('./src/grunt/jslint'),
 
         jsdoc: {
             dist: {
@@ -121,73 +68,7 @@ module.exports = function (grunt) {
             }
         },
 
-        eol: {
-            options: { replace: true },
-            dev: {
-                src: [
-                    'src/public_html/index.html',
-                    'src/public_html/modules.js'
-                ]
-            },
-            build: {
-                src: [
-                    'build/public_html/index.html'
-                ]
-            }
-        },
-
-        jasmine: {
-            options: {
-                specs:   paths.specsClient,
-                vendor:  paths.vendor,
-                helpers: paths.helpers
-            },
-            test: {
-                src: paths.client,
-                options: {
-                    outfile:    'specs/index.html',
-                    keepRunner: true,
-                    junit:      { path:  'build/logs/junit' }
-                }
-            },
-            coverage: {
-                src: paths.client,
-                options: {
-                    template: require('grunt-template-jasmine-istanbul'),
-                    templateOptions: {
-                        coverage: 'build/logs/coverage.json',
-                        report: [
-                            {
-                                type: 'html',
-                                options: { dir: 'build/coverage/' }
-                            },
-                            {
-                                type: 'cobertura',
-                                options: { dir: 'build/logs/' }
-                            },
-                            {
-                                type: 'text-summary'
-                            }
-                        ]
-                    },
-                    display: 'none',
-                    summary: true
-                }
-            }
-        },
-        jasmine_node: {
-            options: {
-                matchall: true, // load only specs containing specNameMatcher
-                forceExit: true,
-                jUnit: {
-                    report: false,
-                    savePath : "./build/reports/jasmine/",
-                    useDotNotation: true,
-                    consolidate: true
-                }
-            },
-            all: ['specs/server/']
-        },
+        jasmine: require('./src/grunt/jasmine'),
 
         uglify: {
             vendor: {
@@ -260,49 +141,9 @@ module.exports = function (grunt) {
                 src: ['./src/templates/image-generator/generator.js']
             }
         },
-        watch: {
-            bower: {
-                files: [ 'bower.json' ],
-                tasks: [ 'bower' ]
-            },
-            gruntfile: {
-                files: [ 'Gruntfile.js' ],
-                tasks: [ 'jslint:grunt' ]
-            },
-            client: {
-                files: [ ]
-                    .concat(paths.client)
-                    .concat(paths.specsClient),
-                tasks: [ 'template:dev', 'jslint:client' ]
-            },
-            server: {
-                files: [
-                    'server.js'
-                ],
-                tasks: [ 'jasmine_node', 'jslint:server' ]
-            },
-            module: {
-                files: [ 'src/module/**/*.js' ],
-                tasks: [ 'jasmine_node', 'jslint:module' ]
-            },
-            specs: {
-                files: paths.specsServer,
-                tasks: [ 'jasmine_node', 'jslint:specs' ]
-            },
-            generator: {
-                files: [
-                    './src/templates/image-generator/generator.js',
-                    './src/templates/image-generator/src/*.js',
-                    './src/templates/image-generator/generator/**.js'
-                ],
-                tasks: [
-                    'execute:images',
-                    'jslint:server'
-                ]
-            }
-        },
+        watch: require('./src/grunt/watch'),
 
-        clean: {
+        /*clean: {
             dev: [
                 '.grunt/',
                 'build/',
@@ -318,7 +159,7 @@ module.exports = function (grunt) {
                 'src/public_html/vendor'
             ],
             junit: [ 'build/logs/junit/' ]
-        }
+        }*/
     });
 
     grunt.loadNpmTasks('grunt-bower-task');

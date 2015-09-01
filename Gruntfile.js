@@ -141,25 +141,7 @@ module.exports = function (grunt) {
                 src: ['./src/templates/image-generator/generator.js']
             }
         },
-        watch: require('./src/grunt/watch'),
-
-        /*clean: {
-            dev: [
-                '.grunt/',
-                'build/',
-                'specs/test.html',
-                'src/public_html/index.html',
-                'src/public_html/modules.js'
-            ],
-            build: [
-                'build/public_html/'
-            ],
-            extra: [
-                'bower_components/',
-                'src/public_html/vendor'
-            ],
-            junit: [ 'build/logs/junit/' ]
-        }*/
+        watch: require('./src/grunt/watch')
     });
 
     grunt.loadNpmTasks('grunt-bower-task');

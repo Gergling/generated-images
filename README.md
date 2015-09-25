@@ -5,16 +5,14 @@ Grunt will be used to build a frontend, which will include modules for specific 
 
 # Modules
 Angular file system will be modular and expressed as follows:
-- application
-- [some external project or grouping name]
-  - [some image name]
-    - [various files]
-    - factory.js
+- [external project or grouping name]
+  - [image name]
+    - [various files/folders]
 
-factory.js is passed suitable resources to modify a canvas context.
+Once inside the image name folder, all files are included and can be in any file structure.
 
-Module files will be automatically set up based on folder names. They should not require dependencies for now, but the option of overwriting doesn't have to be ruled out.
+Module files will be automatically set up based on grouping folder names. They should not require dependencies for now, but the option of overwriting doesn't have to be ruled out.
 
-Factory can inject other resources from inside grouping module.
+The image name is how the image shows up in the groups list of images.
 
 I will be able to navigate a list of projects, and a secondary tier of navigation for a list of images. One at a time will do for now.

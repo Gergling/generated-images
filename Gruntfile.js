@@ -26,17 +26,7 @@ module.exports = function (grunt) {
             }
         },
 
-        template: {
-            dev: {
-                options: {
-                    data: { paths: paths, css: css, expand: true }
-                },
-                files: {
-                    'src/public/index.html':
-                        'src/templates/code/index.html.tpl'
-                }
-            }
-        },
+        template: require('./src/grunt/template'),
 
         jasmine: require('./src/grunt/jasmine'),
 

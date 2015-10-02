@@ -4,8 +4,9 @@
   "description": "Repo for keeping angularjs-driven canvas-generated images.",
   "main": "Gruntfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node wrap grunt template:dev",
+    "watch": "node wrap grunt watch",
     "postinstall": "node wrap node_modules/grunt-bower-task/node_modules/.bin/bower install"
   },
   "repository": {

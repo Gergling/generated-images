@@ -1,34 +1,34 @@
 module.exports = function (grunt) {
     'use strict';
 
-    var gruntMod = function (mod) {return require('./src/grunt/' + mod);};
+    var gruntMod = function (mod) {return require('./src/grunt/' + mod); };
 
-    var paths = gruntMod('paths'),
+    var paths = gruntMod('paths')(grunt),
 
         banner = '/* Liftr */\n'
             + '/* <%= grunt.template.today("yyyy-mm-dd") %> */\n';
 
-    paths.server = paths.module.concat(paths.other);
-    paths.specs = paths.specsClient.concat(paths.specsServer);
+    paths.server = paths.js.module.concat(paths.other);
+    paths.specs = paths.js.spec.concat(paths.specsServer);
     grunt.file.write("src/public/vendor/bootstrap/css/bootstrap.css.map");
 
-    require("./src/grunt/modules.js")(grunt);
+    //require("./src/grunt/modules.js")(grunt);
 
     grunt.initConfig({
-        jslint: require('./src/grunt/jslint'),
+        jslint: require('./src/grunt/jslint')(paths),
 
-        jsdoc: {
-            dist: {
-                src: 'src/public_html/module/**/*.js',
-                options: {
-                    destination: 'build/documentation'
-                }
-            }
-        },
+        //~ jsdoc: {
+            //~ dist: {
+                //~ src: 'src/public_html/module/**/*.js',
+                //~ options: {
+                    //~ destination: 'build/documentation'
+                //~ }
+            //~ }
+        //~ },
 
-        template: require('./src/grunt/template'),
+        template: require('./src/grunt/template')(grunt, paths),
 
-        jasmine: require('./src/grunt/jasmine'),
+        //jasmine: require('./src/grunt/jasmine'),
 
         uglify: {
             vendor: {
@@ -42,11 +42,11 @@ module.exports = function (grunt) {
 
         cssmin: {
             vendor: {
-                files: { 'build/public_html/css/vendor.min.css': css.vendor }
+                files: { 'build/public_html/css/vendor.min.css': paths.css.vendor }
             },
             styles: {
                 options: { banner: banner },
-                files: { 'build/public_html/css/styles.min.css': css.styles }
+                files: { 'build/public_html/css/styles.min.css': paths.css.styles }
             }
         },
 
@@ -68,16 +68,6 @@ module.exports = function (grunt) {
         },
 
         copy: {
-            install: {
-                files: [
-                    {
-                        expand: true,
-                        cwd:    'bower_components/ng-slider/dist/',
-                        src:    'img/*',
-                        dest:   'src/public/vendor/ng-slider/'
-                    }
-                ]
-            },
             build: {
                 files: [
                     {
@@ -94,15 +84,10 @@ module.exports = function (grunt) {
                     }
                 ]
             }
-        },
-
-        execute: {
-            images: {
-                src: ['./src/templates/image-generator/generator.js']
-            }
-        },
-        watch: require('./src/grunt/watch')
+        }
     });
+
+    grunt.config('watch', require('./src/grunt/watch')(grunt));
 
     grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
@@ -113,9 +98,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-eol');
-    grunt.loadNpmTasks('grunt-execute');
+    //grunt.loadNpmTasks('grunt-execute');
     grunt.loadNpmTasks('grunt-jasmine-node');
-    grunt.loadNpmTasks('grunt-jsdoc');
+    //grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-template');
 
